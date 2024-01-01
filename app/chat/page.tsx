@@ -4,20 +4,25 @@ import RecievedBubble from '@/components/chat/RecievedBubble'
 import SentBubble from '@/components/chat/SentBubble'
 import { useAppSelector } from '@/redux/store';
 import axios from 'axios';
-import { useEffect, useRef, useState } from 'react'
+import { SyntheticEvent, useEffect, useRef, useState } from 'react'
 import { useSelector } from 'react-redux';
 
-type Props = {}
 type Contact = {
     id: string | number,
     img?: string,
     email: string,
 }
+type Message = {
+    message: string,
+    me: boolean
+}
+
+type Props = {}
 function page({}: Props) {
     const img = 'https://miro.medium.com/v2/resize:fit:1400/1*rKl56ixsC55cMAsO2aQhGQ@2x.jpeg'
     const [contacts, setContacts] = useState<Contact[]>()
     const [selectedContact, setSelectedContact] = useState(-1);
-    const [messages, setMessages] = useState<string[]>([])
+    const [messages, setMessages] = useState<Message[]>([])
     const [message, setMessage] = useState('')
     const [isLoading, setIsLoading] = useState(true)
     const email = useAppSelector((state) => state.authReducer.value.email)
@@ -39,7 +44,7 @@ function page({}: Props) {
         .catch(err => console.log(err))
         socket?.on('recieve_msg', (data): void => {
             console.log({data})
-            setMessages(prev => ([...prev, data]))
+            setMessages(prev => ([...prev, {message: data.message, me: data.from === myId}]))
         })
     }, [])
     const handleContactSelect = (contact: Contact) => {
@@ -48,7 +53,9 @@ function page({}: Props) {
     }
     const handleSend = () => {
         // console.log({selectedContact, myId, message})
+        setMessages(prev => ([...prev, {message: message, me: true}]))
         socket?.emit('send_msg', {message, to: selectedContact, from: myId})
+        setMessage('')
     }
   return (
     <div className='w-1/2 min-w-fit h-96 shadow-xl mt-5 ml-auto mr-auto bg-secondary p-5 rounded-2xl flex flex-row'>
@@ -68,8 +75,10 @@ function page({}: Props) {
         </div>
         <div className='flex flex-col w-full ml-5'>
             <div className='h-full overflow-y-scroll pr-5'>
-                {messages?.map((msg: string) => (
-                    <SentBubble text={msg} />
+                {messages?.map((message: Message) => (
+                    message.me ?
+                    <SentBubble text={message.message} /> :
+                    <RecievedBubble text={message.message} />
                 ))}
                 {/* <SentBubble text='You were the Chosen One!' />
                 <RecievedBubble text='I hate you!' />
@@ -86,7 +95,10 @@ function page({}: Props) {
                     className="input input-bordered input-secondary w-full max-w-xl"
                     value={message}
                     onChange={(e) => setMessage(e.target.value)}
-                    />
+                    onKeyDown={(e) => {
+                        if(e.key === 'Enter') handleSend()
+                    }}
+                />
                 <button
                     onClick={handleSend}
                     className='btn btn-accent ml-5'
