@@ -1,3 +1,4 @@
+import Image from 'next/image'
 import React from 'react'
 
 type Props = {
@@ -8,9 +9,9 @@ type Props = {
 
 function Card({title, description, imgUrl}: Props) {
   return (
-    <div className="card w-80 bg-base-300 shadow-xl mr-8 mb-8">
+    <div className="card w-80 bg-base-300 shadow-xl mr-4 ml-4 mb-8">
         <figure className="px-10 pt-10">
-            <img src={imgUrl} alt="Profile pic" className="rounded-xl" />
+            <Image width={200} height={100} src={imgUrl} alt="Profile pic" className="rounded-xl" />
         </figure>
         <div className="card-body items-center text-center">
             <h2 className="card-title">{title}</h2>

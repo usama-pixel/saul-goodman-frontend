@@ -83,7 +83,6 @@ function Featured({}: Props) {
                     }}
                 />
             </div>
-
         </div>
     </div>
   )

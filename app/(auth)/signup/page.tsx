@@ -1,10 +1,13 @@
-import React from 'react'
+import React, { FC } from 'react'
+import Signup from './Signup'
 
 type Props = {}
 
-const page = (props: Props) => {
+const page: FC<Props> = ({}) => {
   return (
-    <div>Signup</div>
+    <div>
+      <Signup />
+    </div>
   )
 }
 
