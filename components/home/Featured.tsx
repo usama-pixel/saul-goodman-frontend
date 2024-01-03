@@ -9,7 +9,7 @@ async function Featured({}: Props) {
     // const data = axios.get('/users?laywer=true')
     const res = await axios.get(envVariable.baseUrl+'/auth/users?lawyer=true')
     const data = res.data.map((d: any) => ({id: d.id, email: d.email, description: 'dummy', imgUrl: 'https://miro.medium.com/v2/resize:fit:1400/1*rKl56ixsC55cMAsO2aQhGQ@2x.jpeg'}))
-    console.log({data})
+    // console.log({data})
     // .then(res => console.log({res: res.data}))
     // .catch(err => console.log({err}))
     // {

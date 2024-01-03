@@ -17,7 +17,7 @@ const config: Config = {
   },
   plugins: [require("daisyui")],
   daisyui: {
-    themes: ["fantasy"]
+    themes: ["fantasy", 'synthwave']
   }
 }
 export default config

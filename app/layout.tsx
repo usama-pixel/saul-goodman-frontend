@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import './globals.css'
+import '../components/common/styles/calendar.css'
 import Navbar from '@/components/common/Navbar'
 import { ReduxProvider } from '@/redux/provider'
 

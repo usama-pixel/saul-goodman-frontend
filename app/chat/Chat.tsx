@@ -46,7 +46,6 @@ function Chat({}: Props) {
         })
         .catch(err => console.log(err))
         socket?.on('recieve_msg', (data): void => {
-            console.log({data})
             setMessages(prev => ([...prev, {content: data.message, me: data.from === myId}]))
         })
     }, [])
