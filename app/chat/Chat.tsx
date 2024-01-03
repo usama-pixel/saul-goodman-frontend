@@ -16,6 +16,7 @@ type Message = {
     content: string,
     me: boolean,
     from?: string | number,
+    email?: string,
 }
 
 type Props = {}
@@ -53,8 +54,10 @@ function Chat({}: Props) {
         console.log(contact.id);
         axios.get(process.env.NEXT_PUBLIC_BASE_URL+`/message/${contact.id}`)
         .then(res => {
-            console.log(res.data)
-            setMessages(res.data?.map((d:any) => ({...d, me: d?.sender?.id === myId})))
+            console.log({dd:res.data})
+            setMessages(res.data?.map((d:any) => {
+                return { content: d.content, email: d?.sender?.email, me: d?.sender?.id === myId}}))
+                // return r;
         })
         .catch(err => console.log(err))
         setShowMsgs(true)
@@ -101,9 +104,9 @@ function Chat({}: Props) {
             {showMsgs && <>
             <div className='h-full overflow-y-scroll pr-5'>
                 {messages?.map((message: any) => (
-                    message.me ?
-                    <SentBubble text={message.content} /> :
-                    <RecievedBubble text={message.content} />
+                    message?.me ?
+                    <SentBubble email={message?.email} text={message?.content} /> :
+                    <RecievedBubble email={message?.email} text={message?.content} />
                 ))}
                 {/* <SentBubble text='You were the Chosen One!' />
                 <RecievedBubble text='I hate you!' />

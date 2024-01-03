@@ -2,10 +2,11 @@ import Image from 'next/image'
 import React from 'react'
 
 type Props = {
-  text: string
+  text: string,
+  email: string,
 }
 
-function RecievedBubble({text}: Props) {
+function RecievedBubble({text, email}: Props) {
   return (
     <div className="chat chat-start">
       <div className="chat-image avatar">
@@ -18,7 +19,7 @@ function RecievedBubble({text}: Props) {
         </div>
       </div>
       <div className="chat-header text-secondary-content">
-        Obi-Wan Kenobi
+        {email}
         <time className="text-xs opacity-50">12:45</time>
       </div>
       <div className="chat-bubble">{text}</div>

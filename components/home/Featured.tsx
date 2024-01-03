@@ -1,88 +1,63 @@
-'use client';
-import React, { useState } from 'react'
 import Card from '../common/Card'
+import axios from 'axios';
+import { envVariable } from '@/utils/envVariable';
+import Pagination from '../common/Pagination';
 
 type Props = {}
 
-function Featured({}: Props) {
-    const [active, setActive] = useState(0)
-    const data = [
-        {
-            title: 'MyTitle',
-            description: 'Hello world',
-            imgUrl: 'https://miro.medium.com/v2/resize:fit:1400/1*rKl56ixsC55cMAsO2aQhGQ@2x.jpeg'
-        },
-        {
-            title: 'Tiot',
-            description: 'Yoyo',
-            imgUrl: 'https://miro.medium.com/v2/resize:fit:1400/1*rKl56ixsC55cMAsO2aQhGQ@2x.jpeg'
-        },
-        {
-            title: 'Tiot',
-            description: 'Yoyo',
-            imgUrl: 'https://miro.medium.com/v2/resize:fit:1400/1*rKl56ixsC55cMAsO2aQhGQ@2x.jpeg'
-        },
-        {
-            title: 'Tiot',
-            description: 'Yoyo',
-            imgUrl: 'https://miro.medium.com/v2/resize:fit:1400/1*rKl56ixsC55cMAsO2aQhGQ@2x.jpeg'
-        },
-        {
-            title: 'Tiot',
-            description: 'Yoyo',
-            imgUrl: 'https://miro.medium.com/v2/resize:fit:1400/1*rKl56ixsC55cMAsO2aQhGQ@2x.jpeg'
-        },
-    ]
+async function Featured({}: Props) {
+    // const data = axios.get('/users?laywer=true')
+    const res = await axios.get(envVariable.baseUrl+'/auth/users?lawyer=true')
+    const data = res.data.map((d: any) => ({id: d.id, email: d.email, description: 'dummy', imgUrl: 'https://miro.medium.com/v2/resize:fit:1400/1*rKl56ixsC55cMAsO2aQhGQ@2x.jpeg'}))
+    console.log({data})
+    // .then(res => console.log({res: res.data}))
+    // .catch(err => console.log({err}))
+    // {
+    //     id: 1,
+    //     title: 'MyTitle',
+    //     description: 'Hello world',
+    //     imgUrl: 'https://miro.medium.com/v2/resize:fit:1400/1*rKl56ixsC55cMAsO2aQhGQ@2x.jpeg'
+    // },
+    // useEffect(() => {
+    //     axios.get('/')
+    // }, [])
+    // const data = [
+    //     {
+    //         email: 'MyTitle',
+    //         description: 'Hello world',
+    //         imgUrl: 'https://miro.medium.com/v2/resize:fit:1400/1*rKl56ixsC55cMAsO2aQhGQ@2x.jpeg'
+    //     },
+    //     {
+    //         email: 'Tiot',
+    //         description: 'Yoyo',
+    //         imgUrl: 'https://miro.medium.com/v2/resize:fit:1400/1*rKl56ixsC55cMAsO2aQhGQ@2x.jpeg'
+    //     },
+    //     {
+    //         email: 'Tiot',
+    //         description: 'Yoyo',
+    //         imgUrl: 'https://miro.medium.com/v2/resize:fit:1400/1*rKl56ixsC55cMAsO2aQhGQ@2x.jpeg'
+    //     },
+    //     {
+    //         email: 'Tiot',
+    //         description: 'Yoyo',
+    //         imgUrl: 'https://miro.medium.com/v2/resize:fit:1400/1*rKl56ixsC55cMAsO2aQhGQ@2x.jpeg'
+    //     },
+    //     {
+    //         email: 'Tiot',
+    //         description: 'Yoyo',
+    //         imgUrl: 'https://miro.medium.com/v2/resize:fit:1400/1*rKl56ixsC55cMAsO2aQhGQ@2x.jpeg'
+    //     },
+    // ]
   return (
     <div>
         <p className='text-2xl font-medium mb-5'>Our Top Lawyers</p>
         <div className='flex flex-wrap justify-center'>
-            {data.map((item, index) => (
-                <Card key={index} title={item.title} description={item.description} imgUrl={item.imgUrl} />
+            {data.map((item: any, index: number) => (
+                <Card userId={item.id} key={index} title={item.email} description={item.description} imgUrl={item.imgUrl} />
             ))}
         </div>
         <div style={{width: 'fit-content', marginLeft: 'auto', marginRight: 'auto'}}>
-            <div className="join">
-                <input
-                    className="join-item btn btn-square"
-                    type="radio"
-                    name="options"
-                    aria-label="1"
-                    checked={active === 0}
-                    onChange={(e) => {
-                        setActive(0)
-                    }}/>
-                <input
-                    className="join-item btn btn-square"
-                    type="radio"
-                    name="options"
-                    aria-label="2"
-                    checked={active === 1}
-                    onChange={(e) => {
-                        setActive(1)
-                    }}
-                />
-                <input
-                    className="join-item btn btn-square"
-                    type="radio"
-                    name="options"
-                    aria-label="3"
-                    checked={active === 2}
-                    onChange={(e) => {
-                        setActive(2)
-                    }}
-                />
-                <input
-                    className="join-item btn btn-square"
-                    type="radio"
-                    name="options"
-                    aria-label="4"
-                    checked={active === 3}
-                    onChange={(e) => {
-                        setActive(3)
-                    }}
-                />
-            </div>
+            <Pagination />
         </div>
     </div>
   )
